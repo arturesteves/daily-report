@@ -1,0 +1,12 @@
+# npm modules
+/node_modules
+
+# Webstorm directory
+/.idea/.gitignore
+/.idea/daily-report.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+
+# file with environment variables
+.env*
