@@ -1,70 +1,58 @@
+"use strict";
+// Load External Modules
 const inquirer = require('inquirer');
+const chalk = require('chalk');
 
-const internals = {};
+const log = console.log;
 
-internals.askHowManyIssuesTouched = async () => {
-	const key = 'issuesToReport';
-	const numberOfIssues = await inquirer.prompt([	{
-		type: 'input',
-		name: key,
-		message: 'How many issues to report?',
-		validate: async (input) => {
-			if (isNaN(input)) {
-				return 'Not a number';
-			} else if (input == 0) {
-				return 'You must report issues.';
-			}
-			return true;
-		}
-	}]);
-	return numberOfIssues[key];
+/**
+ *
+ * @param {[Questions]} questions
+ * @returns {Promise<void>}
+ */
+const ask = async (questions) => {
+	const result = await inquirer.prompt(questions);
+	log('');
+	return result;
 };
 
-internals.askDailyReportQuestions = async (numberOfIssueToReport) => {
-	const questions = [
-		{
-			type: 'input',
-			name: 'issue',
-			message: 'What is the issue ID?'
-		},
-		{
-			type:'list',
-			name: 'state',
-			message: 'What is the state of the issue?',
-			choices: [
-				{
-					key: 1,
-					name: 'Development',
-					value: 'development'
-				},
-				{
-					key: 2,
-					name: 'Test',
-					value: 'test',
-				},
-				{
-					key: 3,
-					name: 'Review',
-					value: 'review'
-				} ]
-		},
-		{
-			type: (prev) => prev !== 'review' ? 'list' : null,
-			name: 'estimation',
-			default: '---',
-			//choices: [{'+8h'}]
-		}
-	];
-	let answers = [];
-	for (let i = 0; i < numberOfIssueToReport; i++) {
-		const response = await inquirer.prompt(questions);
-		console.log(`Responses: ${i}: ${JSON.stringify(response)}`);
-		answers.push(response);
-	}
-	return answers;
+/**
+ *
+ * @param {string} message message
+ */
+const logSuccess = (message) => {
+	console.log(chalk.green(message));
 };
+
+/**
+ *
+ * @param {string} message message
+ */
+const logError = (message) => {
+	log(chalk.red(message));
+};
+
+/**
+ *
+ * @param {string} message message
+ */
+const logWarning = (message) => {
+	log(chalk.yellow(message));
+};
+
+/**
+ *
+ * @param {string} message message
+ */
+const logDebug = (message) => {
+	log(chalk.blue(message));
+};
+
 
 module.exports = {
-	askHowManyIssuesTouched: internals.askHowManyIssuesTouched,
-	askDailyReportQuestions: internals.askDailyReportQuestions
+	logSuccess,
+	logDebug,
+	logError,
+	logWarning,
+	ask
 };
