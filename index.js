@@ -1,12 +1,14 @@
 "use strict";
 // Load External Modules
 require('dotenv').config();
+const figlet = require('figlet');
 // Load Project Modules
 const { formatDailyReport, saveDailyReport, askDailyReportQuestions, sendDailyReport } = require("./dailyReport");
-const { logError } = require("./terminal");
+const { logError, logSuccess } = require("./terminal");
 
 
 const main = async () => {
+	await welcomeMessage();
 	if (!process.env.EMAIL_TO) {
 		logError('Set the email recipients!');
 		process.exit();
@@ -23,13 +25,35 @@ const main = async () => {
 		// TODO - retry - log and call function again - call delete explicitly
 	}
 
-
 };
 
+const welcomeMessage = async () => {
+	return new Promise ((resolve, reject) => {
+		figlet.text('Elecctro Daily Report', {
+			font: 'Big',
+			horizontalLayout: 'default',
+			verticalLayout: 'default'
+		}, function(err, data) {
+			if (err)  {
+				logError(`Something went wrong with the welcome Message`);
+				reject(err);
+			}
+			logSuccess(data);
+			resolve();
+		});
+	});
+};
 
 main().catch((error) => { logError(error.stack); });
 
+/*
+TODO - fazer com que o script executado pelo cmd seja sempre em modo de producao
+e quando e executado no webstorm e executado em modo de DEBUG -
+1 forma. adicionar a variable de ambiente no .bat e no webstorm nas configs de execucao.
+2. injectar diferentes ficheiros de config para o sistema
 
+Todo - verify if there is internet, if not save immediatly and do not allow override of files
+ */
 
 /*
 TODO - Refactoring cold to new rep.
