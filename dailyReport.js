@@ -234,6 +234,7 @@ const sendDailyReport = async (filepath, dailyReport) => {
 			cc: process.env.EMAIL_CC,
 			subject: process.env.EMAIL_SUBJECT
 		});
+		logDebug(`Sending email to: ${process.env.EMAIL_TO} | from: ${process.env.EMAIL_USER}`);
 		const result = await sendEmailAndAppendMessageToSentEmailBox(dailyReport);
 		await internals.deleteSavedDailyReport(filepath);
 		logSuccess('Email sent with success');
