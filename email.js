@@ -36,7 +36,6 @@ const loadEmailConfig = (config) => {
 	internals.config.report.subject = config.subject;
 };
 
-// TODO
 const sendEmailAndAppendMessageToSentEmailBox = async (dailyReport) => {
 	/*await internals.sendEmail(internals.config.smtp, {
 		from: internals.config.report.from,
@@ -73,15 +72,13 @@ internals.addEmailToSentBox = async (config, emailText) => {
 };
 
 // test the connection with the server responsible for sending emails using SMTP protocol
-internals.verifySendEmailConnection = async () => {
-};
+internals.verifySendEmailConnection = async () => {};
 
 // test the connection with the receiving email server using IMAP protocol
 internals.verifyRetrievingEmailConnection = async () => {
 	try {
 		const connection = await imaps.connect(internals.config.imap);
 		connection.end();
-		// TODO - decide return true;
 	}
 	catch(error) {
 		return null;

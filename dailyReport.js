@@ -146,10 +146,7 @@ internals.formatDateOfToday = (separator='/') => {
 	return `${dayWithLeadingZero}${separator}${mothWithLeadingZero}${separator}${date.getFullYear()}`;
 };
 
-// TODO
-internals.completeReportFooterTemplate = () => {
-// TODO	Ex: ------------Artur Esteves---------------, ou enumerar os projectos tocados; ex: VENDTIO-Server e VMU-Simulator, etc
-};
+internals.completeReportFooterTemplate = () => { };
 
 /**
  *
@@ -218,12 +215,10 @@ internals.createReportsDirectory = async (path = './reports') => {
 	}
 };
 
-//TODO
 internals.deleteSavedDailyReport = async (filepath) => {
 	await fs.unlink(filepath);
 };
 
-// TODO
 const sendDailyReport = async (filepath, dailyReport) => {
 	try {
 		loadEmailConfig({
@@ -241,7 +236,7 @@ const sendDailyReport = async (filepath, dailyReport) => {
 		return { send: true };
 	} catch(error) {
 		logError(error.stack);
-		return { send: false }; // TODO - could be not true - check what kind of errors deletSavedDAILYReport can send.
+		return { send: false };
 	}
 };
 
