@@ -141,8 +141,8 @@ internals.completeReportHeaderTemplate = () => {
  */
 internals.formatDateOfToday = (separator='/') => {
 	const date = new Date();
-	const dayWithLeadingZero = ('0' + date.getDay()).slice(-2); // returns only the 2 last values from the string
-	const mothWithLeadingZero = ('0' + date.getMonth()+1).slice(-2); // returns only the 2 last values from the string
+	const dayWithLeadingZero = (date.getDate() + '').padStart(2, '0');
+	const mothWithLeadingZero = ((date.getMonth() + 1) + '').padStart(2, '0');
 	return `${dayWithLeadingZero}${separator}${mothWithLeadingZero}${separator}${date.getFullYear()}`;
 };
 
