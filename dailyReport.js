@@ -208,7 +208,7 @@ const saveDailyReport = async (dailyReport) => {
 		if (error.code === 'ENOENT') {
 			await internals.createReportsDirectory(directoryPath);
 			await internals.saveDailyReportOnFile(path, dailyReport);
-			return;
+			return path;
 		}
 		logError(error);
 	}
