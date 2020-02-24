@@ -18,7 +18,13 @@ const main = async () => {
 	const dailyReport = formatDailyReport(reportAnswers);
 	const filepath = await saveDailyReport(dailyReport);
 
-	log(dailyReport); // preview
+	// message preview
+	log(`from: ${process.env.EMAIL_USER}
+to: ${process.env.EMAIL_TO}
+cc: ${process.env.EMAIL_CC}
+subject: ${process.env.EMAIL_SUBJECT}
+message: 
+${dailyReport}`);
 
 	// send report
 	const result = await sendDailyReport(filepath, dailyReport);
