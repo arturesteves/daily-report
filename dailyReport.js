@@ -1,4 +1,5 @@
 // Load External Modules
+const { logWarning } = require("./terminal");
 const fs = require('fs').promises;
 // Load Project Modules
 const { loadEmailConfig, sendEmailAndAppendMessageToSentEmailBox } = require("./email");
@@ -32,7 +33,7 @@ const questionsInfo = {
 	},
 	state: {
 		key: 'state',
-		options: ['Development', 'Test', 'Review', 'Paused'],
+		options: ['Development', 'Test', 'Refactor', 'Review', 'Paused'],
 		defaultValue: 'Development'
 	},
 	description: {
@@ -51,6 +52,12 @@ const questionsInfo = {
 		askWhen: (state) => {
 			return state === 'Development' || state === 'Test';
 		}
+	},
+	isToSendMessage: {
+		key: 'isToSendMessage',
+		type: 'confirm',
+		message: 'Do you wish to send the message?',
+		default: true
 	}
 };
 
@@ -110,6 +117,22 @@ const askDailyReportQuestions = async () => {
 
 	logDebug(`Answers: ${JSON.stringify(answers)}`);
 	return answers;
+};
+
+/**
+ * Asks the user if the message is to be sent or not.
+ *
+ * @return {Promise<boolean>} True if the message is to be sent, false if not.
+ */
+internals.askIfItsOkToSend = async () => {
+	const answer = await ask([{
+		type: questionsInfo.isToSendMessage.type,
+		name: questionsInfo.isToSendMessage.key,
+		message: questionsInfo.isToSendMessage.message,
+		default: questionsInfo.isToSendMessage.default
+	}]);
+
+	return !!answer[questionsInfo.isToSendMessage.key];
 };
 
 /**
@@ -221,6 +244,11 @@ internals.deleteSavedDailyReport = async (filepath) => {
 
 const sendDailyReport = async (filepath, dailyReport) => {
 	try {
+		const isToSend = await internals.askIfItsOkToSend();
+		if (!isToSend) {
+			logWarning('Operation aborted, the message wasn\'t sent but was persisted in the filesystem.');
+			process.exit(0);
+		}
 		loadEmailConfig({
 			user: process.env.EMAIL_USER,
 			password: process.env.EMAIL_PASSWORD,

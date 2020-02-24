@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const imaps = require('imap-simple');
 const mimemessage = require("mimemessage");
-const { logError } = require("./terminal");
+const { logError, log } = require("./terminal");
 
 const internals = {};
 
@@ -37,13 +37,14 @@ const loadEmailConfig = (config) => {
 };
 
 const sendEmailAndAppendMessageToSentEmailBox = async (dailyReport) => {
-	/*await internals.sendEmail(internals.config.smtp, {
+	log(`Sending email to: ${process.env.EMAIL_TO} | from: ${process.env.EMAIL_USER}\n`);
+	await internals.sendEmail(internals.config.smtp, {
 		from: internals.config.report.from,
 		to: internals.config.report.to,
 		cc: internals.config.report.cc,
 		subject: internals.config.report.subject,
 		html: dailyReport
-	});*/
+	});
 	const emailText = internals.constructEmailToIMAP(internals.config.report, dailyReport);
 	await internals.addEmailToSentBox(internals.config.imap, emailText);
 };

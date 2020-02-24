@@ -1,10 +1,9 @@
 "use strict";
 // Load External Modules
 require('dotenv').config();
-const figlet = require('figlet');
 // Load Project Modules
 const { formatDailyReport, saveDailyReport, askDailyReportQuestions, sendDailyReport } = require("./dailyReport");
-const { logError, logSuccess } = require("./terminal");
+const { logError, welcomeMessage, log } = require("./terminal");
 
 
 const main = async () => {
@@ -19,29 +18,14 @@ const main = async () => {
 	const dailyReport = formatDailyReport(reportAnswers);
 	const filepath = await saveDailyReport(dailyReport);
 
+	log(dailyReport); // preview
+
 	// send report
 	const result = await sendDailyReport(filepath, dailyReport);
 	if (!result.send) {
 		// TODO - retry - log and call function again - call delete explicitly
 	}
 
-};
-
-const welcomeMessage = async () => {
-	return new Promise ((resolve, reject) => {
-		figlet.text('Elecctro Daily Report', {
-			font: 'Big',
-			horizontalLayout: 'default',
-			verticalLayout: 'default'
-		}, function(err, data) {
-			if (err)  {
-				logError(`Something went wrong with the welcome Message`);
-				reject(err);
-			}
-			logSuccess(data);
-			resolve();
-		});
-	});
 };
 
 main().catch((error) => { logError(error.stack); });
