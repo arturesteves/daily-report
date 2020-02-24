@@ -16,3 +16,4 @@
 # saved daily reports
 /reports/*
 
+.todo
