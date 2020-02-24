@@ -2,6 +2,7 @@
 /node_modules
 
 # webstorm directory
+/.idea/
 /.idea/.gitignore
 /.idea/daily-report.iml
 /.idea/misc.xml
