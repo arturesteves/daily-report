@@ -7,9 +7,11 @@
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/vcs.xml
+/.idea/sonarlint/
 
 # file with environment variables
 .env*
 
 # saved daily reports
 /reports/*
+
